@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sexy Kostky</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #ff4081;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            color: #aaaaaa;
+            margin-bottom: 30px;
+        }
+        .dice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 350px;
+        }
+        .die {
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80px;
+        }
+        /* Barvy podle fotek */
+        .teal { background-color: #4db8b3; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); } 
+        .orange { background-color: #f28c38; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); } 
+        .pink { background-color: #f075a3; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); } 
+        
+        .label {
+            font-size: 0.55em;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        button {
+            margin-top: 40px;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #ff4081, #c51162);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            transition: transform 0.1s, box-shadow 0.1s;
+            width: 100%;
+            max-width: 350px;
+        }
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(255, 64, 129, 0.4);
+        }
+        /* Animace pro hod */
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎲 Roll With It</h1>
+    <p class="subtitle">Klikni na tlačítko a nech náhodu rozhodnout.</p>
+
+    <div class="dice-container">
+        <div class="die teal" id="die-location">
+            <span class="label">Kde (Místo)</span>
+            <span id="loc-text">❓</span>
+        </div>
+        <div class="die orange" id="die-action">
+            <span class="label">Jak (Akce)</span>
+            <span id="act-text">❓</span>
+        </div>
+        <div class="die pink" id="die-body">
+            <span class="label">Na co (Část těla)</span>
+            <span id="body-text">❓</span>
+        </div>
+    </div>
+
+    <button onclick="rollDice()">Hodit kostkami!</button>
+
+    <script>
+        // Data přečtená přímo z tvých obrázků
+        const locations = [
+            "🛋️ Gauč", 
+            "🚗 Auto", 
+            "🌲 V přírodě", 
+            "🛏️ Postel", 
+            "🖥️ Pracovní stůl", 
+            "🛁 Vana / Sprcha"
+        ];
+        
+        const actions = [
+            "🪶 Lechtat", 
+            "👅 Olizovat", 
+            "🦶 Hrátky nohama", 
+            "💋 Líbat", 
+            "👆 Hladit / Dotýkat se", 
+            "✌️ Prstovat / Vložit"
+        ];
+        
+        const bodyParts = [
+            "🌸 Vagína", 
+            "👄 Ústa", 
+            "🍑 Zadeček", 
+            "🥥 Prsa", 
+            "🍆 Penis", 
+            "🍩 Anál"
+        ];
+
+        function rollDice() {
+            // Přidání animace třesení
+            const diceElements = document.querySelectorAll('.die');
+            diceElements.forEach(die => {
+                die.classList.remove('shake');
+                void die.offsetWidth; // Trigger reflow
+                die.classList.add('shake');
+            });
+
+            // Časovač, aby se text změnil až po chvilce "třesení"
+            setTimeout(() => {
+                const randomLoc = locations[Math.floor(Math.random() * locations.length)];
+                const randomAct = actions[Math.floor(Math.random() * actions.length)];
+                const randomBody = bodyParts[Math.floor(Math.random() * bodyParts.length)];
+
+                document.getElementById('loc-text').innerText = randomLoc;
+                document.getElementById('act-text').innerText = randomAct;
+                document.getElementById('body-text').innerText = randomBody;
+            }, 250); // Změní se po 250ms
+        }
+    </script>
+
+</body>
+</html>
